@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //Array buttons
   var buttons = Array.prototype.slice.call(document.getElementsByTagName('a'));
   // Create a client instance
-  var hostname = "m13.cloudmqtt.com";
-  var port = 12837;
+  var hostname = "wss//m13.cloudmqtt.com";
+  var port = 32837;
   var username = "huauzaup"
   var password = "7zO7RXczdyGa";
   var path = "/navidad"
