@@ -3,21 +3,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //Array buttons
   var buttons = Array.prototype.slice.call(document.getElementsByTagName('a'));
   // Create a client instance
-  var hostname = "wss//m13.cloudmqtt.com";
-  var port = 32837;
-  var username = "huauzaup"
-  var password = "7zO7RXczdyGa";
+  var hostname = "broker.hivemq.com";
+  var port = 8000;
+  var username = "";
+  var password = "";
   var path = "/navidad"
-  client = new Paho.MQTT.Client(hostname, port, path, "web_" + parseInt(Math.random() * 100, 10));
+  client = new Paho.MQTT.Client(hostname, port, "web_" + parseInt(Math.random() * 100, 10));
 
   // connect
   client.connect({
-    userName: username,
-    password: password,
+//    userName: username,
+//    password: password,
     onSuccess: function() {
       console.log("onConnect");
+
       buttons.forEach(function(button) {
-        client.subscribe(button.id);
+        button.addEventListener('click', function() {
+          console.log(this.id)
+          if (this.classList.contains('active')) {
+            this.classList.remove('active');
+            message = new Paho.MQTT.Message("off");
+            message.destinationName = "infotec/"+this.id;
+          } else {
+            this.classList.add('active');
+            message = new Paho.MQTT.Message("on");
+            message.destinationName = "infotec/"+this.id;
+          }
+          client.send(message);
+        })
+
+      });
+      buttons.forEach(function(button) {
+        client.subscribe( "infotec/"+button.id);
       })
     },
     onFailure: function(e) {
@@ -33,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   // called when a message arrives
   client.onMessageArrived = function(message) {
-    console.log("onMessageArrived:" + message.payloadString);
-    button = document.getElementById(message.destinationName);
+    console.log(message.destinationName)
+    button = document.getElementById(message.destinationName.substring(message.destinationName.indexOf("/")+1));
     if (button) {
       if (message.payloadString == "off") {
         button.classList.remove('active');
@@ -44,21 +61,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }
 
-  buttons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      console.log(this.id)
-      if (this.classList.contains('active')) {
-        this.classList.remove('active');
-        message = new Paho.MQTT.Message("off");
-        message.destinationName = this.id;
-      } else {
-        this.classList.add('active');
-        message = new Paho.MQTT.Message("onn");
-        message.destinationName = this.id;
-      }
-      client.send(message);
 
-    })
-
-  });
 });
