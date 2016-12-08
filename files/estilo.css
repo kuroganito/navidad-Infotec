@@ -1,0 +1,70 @@
+@charset "UTF-8";
+.x { height:0px}
+*  { color:#D7D7D7; font-family:sans-serif; text-decoration:none; margin:0; padding:0}
+html, body { height:100%; background:#000; text-align:center }
+.gral   { padding:0px; margin:auto; border:solid 0px #262626; position:relative; height:100% }
+
+/* TOP */
+.top     { height:165px; background:url(nacimiento.jpg) no-repeat; background-size:cover; background-position:bottom}
+.top img { width:210px}
+
+/* PIE */
+.pie     { bottom:0px; position:fixed; padding:5px 0 3px; border-top:1px solid #6d9250;
+    background:#2d5227; 
+    background:-webkit-linear-gradient(-90deg, #2d5227, #6d9250, #2d5227); 
+    background:-o-linear-gradient(-90deg, #2d5227, #6d9250, #2d5227);
+    background:-moz-linear-gradient(-90deg, #2d5227, #6d9250, #2d5227);
+    background:linear-gradient(-90deg, #2d5227, #6d9250, #2d5227) }
+.cloudino { width:150px}
+.muerdago { position:absolute; right:0; bottom:5px}
+/* BOTONES */
+.botones      { text-align:left; padding:10px 15px 30px}
+a             { display:block; font-size:20px; margin-bottom:5px; padding:12px 0px 23px; border-bottom:solid 1px #262626;}
+a:last-child  { border-bottom:0}
+a span, a i   { display:inline-block; border-radius:3px}
+a span        { background:#333; border:1px #444 solid; margin-right:20px; width:70px; height:25px; box-shadow:0px 0px 10px #000, 5px 5px 25px rgba(0,0,0,0.7) inset; padding:1px; position:relative; top:5px; position:relative;}
+a i           { width:40px; height:25px; box-shadow:0px 0px 5px rgba(0,0,0,0.5) inset; position:absolute;
+    -webkit-transition-duration:3s;
+    transition-duration:3s;
+    background:#456c03; 
+    background:-webkit-linear-gradient(#ccc, #999 30%, #555); 
+    background:-o-linear-gradient(#ccc, #999 30%, #555);
+    background:-moz-linear-gradient(#ccc, #999 30%, #555);
+    background:linear-gradient(#697881 40%,#535f66); background-position:-2px -2px}
+a.active i    { background:#6a9416; right:1px; box-shadow:0px 0px 10px #5f9403; 
+    background:-webkit-linear-gradient(#6a9416 40%,#456c03); 
+    background:-o-linear-gradient(#6a9416 40%,#456c03);
+    background:-moz-linear-gradient(#6a9416 40%,#456c03);
+    background:linear-gradient(#6a9416 40%,#456c03); background-position:-2px -2px;
+-webkit-transition-duration:3s;
+    transition-duration:3s;}
+a i:before    { content:"\25cb"; color:#8c989f; font-size:28px; font-style:normal; position:relative; left:30%; top:-6px;}
+a.active i:before     { content:"|"; color:#d1e779; font-size:22px; font-style:normal; position:relative; left:46%; top:1px;} 
+
+/* - - - - Escritorio grande - - - */
+@media (min-width: 1200px){ .x { background:red;}
+    .gral, .pie { width:30%}
+}
+/* - - - - Escritorio pequeño - - - */
+@media (min-width:992px) and (max-width:1199px){ .x { background:green;}
+    .gral, .pie { width:33%}
+}
+/* - - - - Tablet  - - - */
+@media (min-width:768px) and (max-width:991px){ .x { background:cyan;}
+    .gral, .pie { width:40%}
+}
+/* - - - - Smartphone - - - */
+@media (max-width:767px){ .x { background:yellow;}
+    .gral, .pie { width:100%}
+}
+/* - - - - Smartphone Horizontal - - - */
+@media (min-width:640px) and (max-width:767px) { .x { background:lime;}  
+}
+/* - - - - Extra Slim - - - */
+@media (max-width:400px) { .x { background:pink;}
+}    
+/* - - - - SAFARI HACK - - - */
+@media screen and (min-color-index:0) 
+and(-webkit-min-device-pixel-ratio:0) { @media
+{
+}}
