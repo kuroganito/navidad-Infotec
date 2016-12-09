@@ -2,64 +2,40 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   //Array buttons
   var buttons = Array.prototype.slice.call(document.getElementsByTagName('a'));
-  // Create a client instance
-  var hostname = "broker.hivemq.com";
-  var port = 8000;
-  var username = "";
-  var password = "";
-  var path = "/navidad"
-  client = new Paho.MQTT.Client(hostname, port, "web_" + parseInt(Math.random() * 100, 10));
 
-  // connect
-  client.connect({
-//    userName: username,
-//    password: password,
-    onSuccess: function() {
-      console.log("onConnect");
 
-      buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-          console.log(this.id)
-          if (this.classList.contains('active')) {
-            this.classList.remove('active');
-            message = new Paho.MQTT.Message("off");
-            message.destinationName = "infotec/"+this.id;
-          } else {
-            this.classList.add('active');
-            message = new Paho.MQTT.Message("on");
-            message.destinationName = "infotec/"+this.id;
-          }
-          client.send(message);
-        })
+  var id = "584841a824ac158eeddbc4f6"
+  var url = 'ws://cloudino.io/websocket/cdino?ID=' + id;
 
-      });
-      buttons.forEach(function(button) {
-        client.subscribe( "infotec/"+button.id);
+  WS.connect(url, function() {
+    console.log("Conectado a cloudino")
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() {
+
+        if (this.classList.contains('active')) {
+          this.classList.remove('active');
+          console.log(this.getAttribute('data-off'))
+            WS.post('pin', this.getAttribute('data-off'));
+        } else {
+          this.classList.add('active');
+            WS.post('pin', this.getAttribute('data-on'));
+
+            console.log(this.getAttribute('data-on'))
+        }
       })
-    },
-    onFailure: function(e) {
-      console.log("Fallo", e)
-    }
+    });
   });
 
-  client.onConnectionLost = function(responseObject) {
-    if (responseObject.errorCode !== 0) {
-      console.log("onConnectionLost:" + responseObject.errorMessage);
-    }
-  }
-
-  // called when a message arrives
-  client.onMessageArrived = function(message) {
-    console.log(message.destinationName)
-    button = document.getElementById(message.destinationName.substring(message.destinationName.indexOf("/")+1));
+  WS.onMessage = function (topic,message){
+    console.log("Recive: " + topic)
+    button = document.getElementById(topic);
     if (button) {
-      if (message.payloadString == "off") {
+      if (message == "off") {
         button.classList.remove('active');
-      } else if (message.payloadString == "on") {
+      } else if (message == "on") {
         button.classList.add('active');
       }
     }
   }
-
 
 });
